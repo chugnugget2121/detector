@@ -1,0 +1,130 @@
+// A1 is blue
+int lowPin = A1;
+// A2 is green
+int medPin = A2;
+// A3 is red
+int highPin = A3;
+
+// Change the temperatures accordingly. Min is the lower end, Max is the higher end.
+// Low temperature range
+double tempLowMin = 0;
+double tempLowMax = 20;
+
+// Medium temperature range
+double tempMidMin = 20;
+double tempMidMax = 40;
+
+// High temperature range
+double tempHighMin = 40;
+double tempHighMax = 60;
+
+float temperatureC;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(lowPin, OUTPUT);
+  pinMode(medPin, OUTPUT);
+  pinMode(highPin, OUTPUT);
+}
+
+boolean checkTempHigh() {
+
+  if(temperatureC <= tempHighMax) {
+    if(temperatureC >= tempHighMin) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
+}
+boolean checkTempMid() {
+  if(temperatureC <= tempMidMax) {
+    if(temperatureC >= tempMidMin) {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
+}
+boolean checkTempLow() {
+  if(temperatureC <= tempLowMax) {
+    if(temperatureC >= tempLowMin) {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
+}
+
+void loop() {
+  int sensorValue = analogRead(A0);
+  float voltage = sensorValue * (5.0/1023.0);
+  temperatureC = (105 * voltage) - 52.5;
+  Serial.print("Voltage: ");
+  Serial.println(voltage);
+  Serial.print("Temperature: ");
+  Serial.println(temperatureC);
+  if(temperatureC >= tempHighMax) {
+    analogWrite(lowPin, 0);
+    analogWrite(medPin, 0);
+    analogWrite(highPin, 0);
+  }
+  if(temperatureC <= tempLowMin) {
+    analogWrite(lowPin, 0);
+    analogWrite(medPin, 0);
+    analogWrite(highPin, 0);
+  }
+  if(checkTempHigh() == true) {
+    if(checkTempMid() == true)
+    {
+      analogWrite(lowPin, 0);
+      analogWrite(medPin, 255);
+      analogWrite(highPin, 255);
+    }
+    else {
+      analogWrite(lowPin, 0);
+      analogWrite(medPin, 0);
+      analogWrite(highPin, 255);
+    }
+  }
+  else if(checkTempMid() == true) {
+    if(checkTempLow() == true)
+    {
+      analogWrite(lowPin, 255);
+      analogWrite(medPin, 255);
+      analogWrite(highPin, 0);
+    }
+    else {
+      analogWrite(lowPin, 0);
+      analogWrite(medPin, 255);
+      analogWrite(highPin, 0);
+    }
+  }
+  else if(checkTempLow() == true) {
+      analogWrite(lowPin, 255);
+      analogWrite(medPin, 0);
+      analogWrite(highPin, 0);
+  }
+  if(checkTempLow() == true){
+    if(checkTempHigh() == true){
+      analogWrite(lowPin, 255);
+      analogWrite(medPin, 255);
+      analogWrite(highPin, 255);
+    }
+  }
+  // Comment out or change the value if you want the output to be faster/slower
+  delay(1000);
+}
