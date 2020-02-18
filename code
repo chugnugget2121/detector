@@ -73,10 +73,12 @@ void loop() {
   int sensorValue = analogRead(A0);
   float voltage = sensorValue * (5.0/1023.0);
   temperatureC = (105 * voltage) - 52.5;
+  Serial.print("Analog Read: ");
+  Serial.println(sensorValue);
   Serial.print("Voltage: ");
-  Serial.println(voltage);
+  Serial.println(voltage, 4);
   Serial.print("Temperature: ");
-  Serial.println(temperatureC);
+  Serial.println(temperatureC, 4);
   if(temperatureC >= tempHighMax) {
     analogWrite(lowPin, 0);
     analogWrite(medPin, 0);
