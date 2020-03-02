@@ -1,3 +1,6 @@
+// Ground is black
+// Analog A0 is red
+// Power (5V) is red wire with black tape
 // A1 is blue
 int lowPin = A1;
 // A2 is green
@@ -28,15 +31,13 @@ void setup() {
 }
 
 boolean checkTempHigh() {
-
   if(temperatureC <= tempHighMax) {
     if(temperatureC >= tempHighMin) {
       return true;
     }else{
       return false;
     }
-  }
-  else {
+  }else{
     return false;
   }
 }
@@ -44,13 +45,10 @@ boolean checkTempMid() {
   if(temperatureC <= tempMidMax) {
     if(temperatureC >= tempMidMin) {
       return true;
-    }
-    else
-    {
+    }else{
       return false;
     }
-  }
-  else {
+  }else{
     return false;
   }
 }
@@ -58,13 +56,10 @@ boolean checkTempLow() {
   if(temperatureC <= tempLowMax) {
     if(temperatureC >= tempLowMin) {
       return true;
-    }
-    else
-    {
+    }else{
       return false;
     }
-  }
-  else {
+  }else{
     return false;
   }
 }
@@ -103,29 +98,25 @@ void loop() {
     }
   }
   else if(checkTempMid() == true) {
-    if(checkTempLow() == true)
-    {
+    if(checkTempLow() == true) {
       analogWrite(lowPin, 255);
       analogWrite(medPin, 255);
       analogWrite(highPin, 0);
-    }
-    else {
+    }else{
       analogWrite(lowPin, 0);
       analogWrite(medPin, 255);
       analogWrite(highPin, 0);
     }
   }
   else if(checkTempLow() == true) {
-      analogWrite(lowPin, 255);
-      analogWrite(medPin, 0);
-      analogWrite(highPin, 0);
-  }
-  if(checkTempLow() == true){
-    if(checkTempHigh() == true){
+    if(checkTempHigh() == true) {
       analogWrite(lowPin, 255);
       analogWrite(medPin, 255);
       analogWrite(highPin, 255);
-    }
+   }else{
+      analogWrite(lowPin, 255);
+      analogWrite(medPin, 0);
+      analogWrite(highPin, 0);
   }
   // Comment out or change the value if you want the output to be faster/slower
   delay(1000);
