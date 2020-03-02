@@ -41,6 +41,7 @@ boolean checkTempHigh() {
     return false;
   }
 }
+
 boolean checkTempMid() {
   if(temperatureC <= tempMidMax) {
     if(temperatureC >= tempMidMin) {
@@ -52,6 +53,7 @@ boolean checkTempMid() {
     return false;
   }
 }
+
 boolean checkTempLow() {
   if(temperatureC <= tempLowMax) {
     if(temperatureC >= tempLowMin) {
@@ -65,6 +67,7 @@ boolean checkTempLow() {
 }
 
 void loop() {
+  // Code for calculating and printing sensor, voltage, and temperature values
   int sensorValue = analogRead(A0);
   float voltage = sensorValue * (5.0/1023.0);
   temperatureC = (105 * voltage) - 52.5;
@@ -74,6 +77,8 @@ void loop() {
   Serial.println(voltage, 4);
   Serial.print("Temperature: ");
   Serial.println(temperatureC, 4);
+  
+  // Code for turning pins on
   if(temperatureC >= tempHighMax) {
     analogWrite(lowPin, 0);
     analogWrite(medPin, 0);
@@ -90,8 +95,7 @@ void loop() {
       analogWrite(lowPin, 0);
       analogWrite(medPin, 255);
       analogWrite(highPin, 255);
-    }
-    else {
+    }else{
       analogWrite(lowPin, 0);
       analogWrite(medPin, 0);
       analogWrite(highPin, 255);
